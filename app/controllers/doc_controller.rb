@@ -28,7 +28,13 @@ class DocController < ApplicationController
 				flts["sslauthor"] = Regexp.new(params[:author])
 			end
 			if params.has_key?(:keywords)
-				flts["browsepath"] = Regexp.new(params[:keywords])
+				flts["u'subject_terms'"] = Regexp.new(params[:keywords])
+			end
+			if params.has_key?(:disciplines)
+				flts["u'disciplines'"] = Regexp.new(params[:disciplines])
+			end
+			if params.has_key?(:publisher)
+				flts["u'publisher'"] = Regexp.new(params[:publisher])
 			end
 			flts
 		end
