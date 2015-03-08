@@ -1,0 +1,7 @@
+<h3><%= @doc['ssltitle'] %></h3>
+<h5>By <%= @doc['sslauthor'] %></h5>
+<p>Additional Info:</p>
+<% @doc.each do |k, v| %>
+	<% if k[0] == 'u' then k = k[2..-2] end %>
+	<p><%= k.gsub(/\u0080-\u00ff/,'') %>: <%= v %></p> 
+<% end %>
