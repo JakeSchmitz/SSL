@@ -18,19 +18,17 @@
     </div>
   </div>
   <div class="panel-body">
-    <table style="width:100%">
+    <table class="table">
       <tr>
-        <th>ID</th>
-        <th>Title</th> 
-        <th>Author(s)</th>
-        <th>ISBN</th>
+        <th><a href=<%= docs_path({sort_by: :ssltitle}) %>>Title</a></th> 
+        <th><a href=<%= docs_path({sort_by: :sslauthor}) %>>Author(s)</a></th>
+        <th><a href=<%= docs_path({sort_by: :isbn}) %>>ISBN</a></th>
       </tr>
       <% @docs.first(100).each do |d| %>
         <% doc = d %>
         <tr>
-          <td><%= doc['id'] %></td>
-          <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'][0..50].gsub(/\s\w+\s*$/, '...') %></a></td>
-          <td><%= doc['sslauthor'] %></td>
+          <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
+          <td><% if doc['sslauthor'].length > 40 %><%= doc['sslauthor'][0..40].gsub(/\s\w+\s*$/, '...') %><% else %><%= doc['sslauthor'] %><% end %></td>
           <td><%= doc['isbn'] %></td>
         </tr>
       <% end %>

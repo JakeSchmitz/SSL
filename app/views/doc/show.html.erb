@@ -1,15 +1,22 @@
 <h3><%= @doc['ssltitle'] %></h3>
 <h5>By <%= @doc['sslauthor'] %></h5>
-<p>Additional Info:</p>
-<table style="width:100%">
-  <tr>
-  	<th>Attribute</th> 
-    <th>Value</th>
-  </tr>
-	<% @doc.each do |k, v| %>
-		<% if k[0] == 'u' then k = k[2..-2] end %>
-		<tr>
-			<td><%= k.gsub(/\u0080-\u00ff/,'') %></td> 
-			<td><%= v %></td> 
-		</tr>
-	<% end %>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <div class="panel-title">Additional Info:</div>
+  </div>
+  <div class="panel-body" style="overflow-x: scroll">
+		<table class="table">
+		  <tr>
+		  	<th>Key</th> 
+		    <th>Value</th>
+		  </tr>
+			<% @doc.each do |k, v| %>
+				<% if k[0] == 'u' then k = k[2..-2] end %>
+				<tr>
+					<td><%= k.gsub(/\u0080-\u00ff/,'') %></td> 
+					<td><%= v %></td> 
+				</tr>
+			<% end %>
+		</table>
+	</div>
+</div>

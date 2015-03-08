@@ -4,11 +4,11 @@ include Mongo
 class DocController < ApplicationController
 	def index
 		@filters = filters
-		@docs = ssl.find(@filters).sort({"id" => 1})
+		@docs = ssl.find(@filters).sort(sorted_by)
 	end
 
 	def show
-		@doc = ssl.find({ "id" => params[:id] }).to_a.first
+		@doc = ssl.find({id: params[:id]}).to_a.first
 	end
 
 	private
@@ -38,5 +38,15 @@ class DocController < ApplicationController
 				flts["u'publisher'"] = Regexp.new(params[:publisher])
 			end
 			flts
+		end
+
+		def sorted_by
+			srt = {}
+			if params.has_key?(:sort_by) and params[:sort_by].match(/^[[:alnum:]]+$/)
+				srt[params[:sort_by]] = 1
+			else
+				srt[:ssltitle] = 1
+			end
+			srt
 		end
 end
