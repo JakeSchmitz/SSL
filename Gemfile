@@ -27,6 +27,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'mongo'
 gem 'bson_ext'
 gem 'bootstrap-sass'
+gem 'awesome_print'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

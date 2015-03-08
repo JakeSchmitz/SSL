@@ -8,16 +8,23 @@
   <%= submit_tag("Search") %>
   <%= link_to 'Clear', docs_path, class: 'btn' %>
 <% end %>
-<table style="width:100%">
-  <tr>
-    <th>Title</th> 
-    <th>Author(s)</th>
-  </tr>
-  <% @docs.each do |d| %>
-    <% doc = d %>
-    <tr>
-      <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
-      <td><%= doc['sslauthor'] %></td>
-    </tr>
-  <% end %>
-</table>
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <div class="panel-title">Social Science Library</div>
+  </div>
+  <div class="panel-body">
+    <table style="width:100%">
+      <tr>
+        <th>Title</th> 
+        <th>Author(s)</th>
+      </tr>
+      <% @docs.each do |d| %>
+        <% doc = d %>
+        <tr>
+          <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
+          <td><%= doc['sslauthor'] %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

@@ -1,9 +1,12 @@
+require 'awesome_print'
+AwesomePrint.pry!
 require 'mongo'
 include Mongo
 
 class DocController < ApplicationController
 	def index
-		@docs = ssl.find(filters).sort(:id)
+		@filters = filters
+		@docs = ssl.find(@filters).sort(:id)
 	end
 
 	def show
