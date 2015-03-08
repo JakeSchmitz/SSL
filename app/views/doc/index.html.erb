@@ -5,12 +5,17 @@
   <%= text_field_tag(:author, params[:author]) %>
   <%= label_tag(:keywords, "Keywords:") %>
   <%= text_field_tag(:keywords, params[:keywords]) %>
-  <%= submit_tag("Search") %>
-  <%= link_to 'Clear', docs_path, class: 'btn' %>
+  <%= submit_tag("Search", class: 'btn btn-primary') %>
+  <%= link_to 'Clear', docs_path %>
 <% end %>
-<div class="panel panel-info">
+<div class="panel panel-info ssl-table">
   <div class="panel-heading">
-    <div class="panel-title">Social Science Library</div>
+    <div class="panel-title">
+    <% if not (params[:title] == '' and params[:author] == '' and params[:keywords] == '') %>SSL Filters <% else %>Social Science Library<% end %> 
+    <% if not params[:title].nil? and params[:title] != '' %>| Title: <%= params[:title] %> <% end %>
+    <% if not params[:author].nil? and params[:author] != ''%>| Author: <%= params[:author] %> <% end %>
+    <% if not params[:keywords].nil? and params[:keywords] != ''%>| Keywords: <%= params[:keywords] %> <% end %>
+    </div>
   </div>
   <div class="panel-body">
     <table style="width:100%">
@@ -18,7 +23,7 @@
         <th>Title</th> 
         <th>Author(s)</th>
       </tr>
-      <% @docs.each do |d| %>
+      <% @docs.first(100).each do |d| %>
         <% doc = d %>
         <tr>
           <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>

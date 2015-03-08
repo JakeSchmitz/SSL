@@ -20,6 +20,6 @@
   <%= label_tag(:publisher, "Publisher:") %>
   <%= text_field_tag(:publisher, params[:publisher]) %>
   </br>
-  <%= submit_tag("Search") %>
-  <%= link_to 'Clear', docs_path, class: 'btn' %>
+  <%= submit_tag("Search", class: 'btn btn-primary') %>
+  <%= link_to 'Clear', docs_path %>
 <% end %>
