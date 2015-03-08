@@ -20,14 +20,18 @@
   <div class="panel-body">
     <table style="width:100%">
       <tr>
+        <th>ID</th>
         <th>Title</th> 
         <th>Author(s)</th>
+        <th>ISBN</th>
       </tr>
       <% @docs.first(100).each do |d| %>
         <% doc = d %>
         <tr>
-          <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
+          <td><%= doc['id'] %></td>
+          <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'][0..50].gsub(/\s\w+\s*$/, '...') %></a></td>
           <td><%= doc['sslauthor'] %></td>
+          <td><%= doc['isbn'] %></td>
         </tr>
       <% end %>
     </table>

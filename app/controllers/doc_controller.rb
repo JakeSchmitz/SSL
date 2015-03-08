@@ -1,12 +1,10 @@
-require 'awesome_print'
-AwesomePrint.pry!
 require 'mongo'
 include Mongo
 
 class DocController < ApplicationController
 	def index
 		@filters = filters
-		@docs = ssl.find(@filters).sort(:id)
+		@docs = ssl.find(@filters).sort({"id" => 1})
 	end
 
 	def show
@@ -24,19 +22,19 @@ class DocController < ApplicationController
 
 		def filters
 			flts = {}
-			if params.has_key?(:title)
+			if params.has_key?(:title) and params[:title].match(/^[[:alnum:]]+$/)
 				flts["ssltitle"] = Regexp.new(params[:title])
 			end
-			if params.has_key?(:author)
+			if params.has_key?(:author) and params[:author].match(/^[[:alnum:]]+$/)
 				flts["sslauthor"] = Regexp.new(params[:author])
 			end
-			if params.has_key?(:keywords)
+			if params.has_key?(:keywords) and params[:keywords].match(/^[[:alnum:]]+$/)
 				flts["u'subject_terms'"] = Regexp.new(params[:keywords])
 			end
-			if params.has_key?(:disciplines)
+			if params.has_key?(:disciplines) and params[:disciplines].match(/^[[:alnum:]]+$/)
 				flts["u'disciplines'"] = Regexp.new(params[:disciplines])
 			end
-			if params.has_key?(:publisher)
+			if params.has_key?(:publisher) and params[:publisher].match(/^[[:alnum:]]+$/)
 				flts["u'publisher'"] = Regexp.new(params[:publisher])
 			end
 			flts
