@@ -1,5 +1,6 @@
 Gdae::Application.routes.draw do
   get "ssl/index"
+  get "ssl/about"
   root "ssl#index"
 
   get '/doc/:id', to: 'doc#show', as: 'doc'
