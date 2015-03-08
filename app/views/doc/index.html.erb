@@ -3,6 +3,8 @@
   <%= text_field_tag(:title, params[:title])%>
   <%= label_tag(:author, "Author(s):") %>
   <%= text_field_tag(:author, params[:author]) %>
+  <%= label_tag(:keywords, "Keywords:") %>
+  <%= text_field_tag(:keywords, params[:keywords]) %>
   <%= submit_tag("Search") %>
   <%= link_to 'Clear', docs_path, class: 'btn' %>
 <% end %>
@@ -11,7 +13,7 @@
     <th>Title</th> 
     <th>Author(s)</th>
   </tr>
-  <% @docs.first(50).each do |d| %>
+  <% @docs.each do |d| %>
     <% doc = d %>
     <tr>
       <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>

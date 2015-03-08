@@ -27,6 +27,9 @@ class DocController < ApplicationController
 			if params.has_key?(:author)
 				flts["sslauthor"] = Regexp.new(params[:author])
 			end
+			if params.has_key?(:keywords)
+				flts["browsepath"] = Regexp.new(params[:keywords])
+			end
 			flts
 		end
 end
