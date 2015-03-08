@@ -15,5 +15,3 @@
 /log/*.log
 /tmp
 
-# Ignore compiled assets for rails app
-/public/assets/application-*
