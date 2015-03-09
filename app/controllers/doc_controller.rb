@@ -1,8 +1,7 @@
-require 'awesome_print'
-AwesomePrint.pry!
 require 'jsonclient'
 require 'mongo'
 include Mongo
+require 'uri'
 
 class DocController < ApplicationController
 	def index
@@ -14,19 +13,20 @@ class DocController < ApplicationController
 		@doc = ssl.find({id: params[:id]}).to_a.first
 	end
 
-        def find
-                clnt = JSONClient.new
-                header = {'Cookie' => 'Summon-Two=true'}
-                response = clnt.get("http://tufts.summon.serialssolutions.com/api/search?pn=1&ho=t&q=" + params[:title],
-                                    nil,
-                                    header)
-                json_response = response.content
-                if json_response.keys.include?("documents")
-                    @result = response.content["documents"]
-                else
-                    @result = nil
-                end
-        end
+	def find
+		clnt = JSONClient.new
+		header = {'Cookie' => 'Summon-Two=true'}
+		uri = URI.parse(URI.encode("http://tufts.summon.serialssolutions.com/api/search?pn=1&ho=t&q=" + params[:title]))
+		response = clnt.get(uri,
+												nil,
+												header)
+		json_response = response.content
+		if json_response.keys.include?("documents")
+			@result = response.content["documents"]
+		else
+			@result = nil
+		end
+	end
 
 	private
 		def ssl
@@ -46,7 +46,8 @@ class DocController < ApplicationController
 				flts["sslauthor"] = Regexp.new(params[:author])
 			end
 			if params.has_key?(:keywords) and params[:keywords].match(/^[[:alnum:]]+$/)
-				flts["u'subject_terms'"] = Regexp.new(params[:keywords])
+				keywords = params[:keywords].split(' ').join('| ')
+				flts["u'subject_terms'"] = Regexp.new(keywords)
 			end
 			if params.has_key?(:disciplines) and params[:disciplines].match(/^[[:alnum:]]+$/)
 				flts["u'disciplines'"] = Regexp.new(params[:disciplines])

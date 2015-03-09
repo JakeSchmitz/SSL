@@ -28,7 +28,7 @@
         <% doc = d %>
         <tr>
           <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
-          <td><% if doc['sslauthor'].length > 40 %><%= doc['sslauthor'][0..40].gsub(/\s\w+\s*$/, '...') %><% else %><%= doc['sslauthor'] %><% end %></td>
+          <td><% if doc['sslauthor'].length > 30 %><%= doc['sslauthor'][0..30].gsub(/\s\w+\s*$/, '...') %><% else %><%= doc['sslauthor'] %><% end %></td>
           <td><%= doc['isbn'] %></td>
         </tr>
       <% end %>
