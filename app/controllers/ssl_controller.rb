@@ -4,4 +4,7 @@ class SslController < ApplicationController
 
   def about
   end
+
+  def admin
+  end
 end

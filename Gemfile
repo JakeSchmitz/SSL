@@ -28,6 +28,7 @@ gem 'mongo'
 gem 'bson_ext'
 gem 'bootstrap-sass'
 gem 'awesome_print'
+gem 'httpclient'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
