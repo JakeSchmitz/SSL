@@ -1,0 +1,48 @@
+<% if not @result.nil? and not @result.empty? %> 
+    <p>Is this the article you wanted?</p>
+    <ul id="results">
+    <% @result.each do |r| %>
+        <li>
+        <table style="width:100%">
+        <tr>
+            <th>Attribute</th> 
+            <th>Value</th>
+        </tr>
+        <% r.each do |k, v| %>
+	    <% if k[0] == 'u' then k = k[2..-2] end %>
+	    <tr>
+		<td><%= k.gsub(/\u0080-\u00ff/,'') %></td> 
+		<td><%= v %></td> 
+	    </tr>
+        <% end %>
+        </table>
+        </li>
+    <% end %>
+
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn" id="btn-no">No</button>
+    </div>
+
+    <script>
+        var $listItems = $('#results > li');
+
+        // hide all the list items and show the first one
+        $($listItems).hide().eq(0).show();
+
+        $('#btn-no')
+            .click(function() {
+                $($listItems)
+                    .filter(':visible')
+                    .hide()
+                    .next()
+                    .show();
+                if ($($listItems).filter(':visible').length == 0) {
+                    $('p').replaceWith("<p>No results found.</p>");
+                    $('button').remove();
+                }
+        });
+    </script>
+<% else %>
+    <p>No results found.</p>
+<% end %>

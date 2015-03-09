@@ -1,0 +1,10 @@
+<h1>Add an Entry</h1>
+
+<%= form_tag("/find", method: "get") do %>
+	<h5>Search By:</h5>
+  <%= label_tag(:title, "Title:") %>
+  <%= text_field_tag(:title, params[:title])%>
+  </br>
+  <%= submit_tag("Search", class: 'btn btn-primary') %>
+  <%= link_to 'Clear', docs_path %>
+<% end %>
