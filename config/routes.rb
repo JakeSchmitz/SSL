@@ -1,8 +1,10 @@
 Gdae::Application.routes.draw do
   get "ssl/index"
   get "ssl/about"
+  get "ssl/admin"
   root "ssl#index"
 
+  get '/find', to: 'doc#find', as: 'result'
   get '/doc/:id', to: 'doc#show', as: 'doc'
   get '/doc', to: 'doc#index', as: 'docs'
   # The priority is based upon order of creation: first created -> highest priority.

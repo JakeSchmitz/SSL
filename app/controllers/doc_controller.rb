@@ -1,3 +1,6 @@
+require 'awesome_print'
+AwesomePrint.pry!
+require 'jsonclient'
 require 'mongo'
 include Mongo
 
@@ -10,6 +13,20 @@ class DocController < ApplicationController
 	def show
 		@doc = ssl.find({id: params[:id]}).to_a.first
 	end
+
+        def find
+                clnt = JSONClient.new
+                header = {'Cookie' => 'Summon-Two=true'}
+                response = clnt.get("http://tufts.summon.serialssolutions.com/api/search?pn=1&ho=t&q=" + params[:title],
+                                    nil,
+                                    header)
+                json_response = response.content
+                if json_response.keys.include?("documents")
+                    @result = response.content["documents"]
+                else
+                    @result = nil
+                end
+        end
 
 	private
 		def ssl
