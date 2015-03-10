@@ -1,6 +1,6 @@
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div class="panel-title">Additional Info:</div>
+    <div class="panel-title"><%= doc['title'].gsub('<b>', '').gsub('</b>', '') %></div>
   </div>
   <div class="panel-body" style="overflow-x: scroll">
 		<table class="table">
@@ -8,6 +8,22 @@
 		  	<th>Key</th> 
 		    <th>Value</th>
 		  </tr>
+		  <tr>
+		  	<td>Title</td>
+		  	<td><%= doc['title'].gsub('<b>', '').gsub('</b>', '') %></td>
+		  </tr>
+		  <% if not doc['authors'].nil? %>
+			  <tr>
+			  	<td>Authors</td>
+			  	<td><%= doc['authors'] %></td>
+			  </tr>
+		  <% end %>
+		  <% if not doc['subject_terms'].nil? %>
+			  <tr>
+			  	<td>Keywords</td>
+			  	<td><%= doc['subject_terms'].map{ |x| x.gsub('<b>', '').gsub('</b>', '') } %></td>
+			  </tr>
+		  <% end %>
 			<% doc.each do |k, v| %>
 				<% if k[0] == 'u' then k = k[2..-2] end %>
 				<tr>

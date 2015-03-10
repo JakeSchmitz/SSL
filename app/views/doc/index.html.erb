@@ -24,7 +24,7 @@
         <th><a href=<%= docs_path({sort_by: :sslauthor}) %>>Author(s)</a></th>
         <th><a href=<%= docs_path({sort_by: :isbn}) %>>ISBN</a></th>
       </tr>
-      <% @docs.first(100).each do |d| %>
+      <% @docs.first(50).each do |d| %>
         <% doc = d %>
         <tr>
           <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
