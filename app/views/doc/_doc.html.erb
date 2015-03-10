@@ -1,6 +1,8 @@
+<h3><% if doc['ssltitle'].nil? %><%= doc['title'].gsub('<b>', '').gsub('</b>', '') %><% else %><%= doc['ssltitle'] %><% end %></h3>
 <div class="panel panel-info">
   <div class="panel-heading">
-    <div class="panel-title"><%= doc['title'].gsub('<b>', '').gsub('</b>', '') %></div>
+  <!-- <%= doc['title'].gsub('<b>', '').gsub('</b>', '') %> -->
+    <div class="panel-title">Metadata</div>
   </div>
   <div class="panel-body" style="overflow-x: scroll">
 		<table class="table">
@@ -21,7 +23,7 @@
 		  <% if not doc['subject_terms'].nil? %>
 			  <tr>
 			  	<td>Keywords</td>
-			  	<td><%= doc['subject_terms'].map{ |x| x.gsub('<b>', '').gsub('</b>', '') } %></td>
+			  	<td><%= doc['subject_terms'] %></td>
 			  </tr>
 		  <% end %>
 			<% doc.each do |k, v| %>
