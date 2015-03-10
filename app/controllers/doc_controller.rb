@@ -5,8 +5,7 @@ require 'uri'
 
 class DocController < ApplicationController
 	def index
-		@filters = filters
-		@docs = ssl.find(@filters).sort(sorted_by)
+		@docs = ssl.find(filters).sort(sorted_by)
 	end
 
 	def show
@@ -47,13 +46,13 @@ class DocController < ApplicationController
 			end
 			if params.has_key?(:keywords) and params[:keywords].match(/^[[:alnum:]]+$/)
 				keywords = params[:keywords].split(' ').join('| ')
-				flts["u'subject_terms'"] = Regexp.new(keywords)
+				flts["subject_terms'"] = Regexp.new(keywords)
 			end
 			if params.has_key?(:disciplines) and params[:disciplines].match(/^[[:alnum:]]+$/)
-				flts["u'disciplines'"] = Regexp.new(params[:disciplines])
+				flts["disciplines'"] = Regexp.new(params[:disciplines])
 			end
 			if params.has_key?(:publisher) and params[:publisher].match(/^[[:alnum:]]+$/)
-				flts["u'publisher'"] = Regexp.new(params[:publisher])
+				flts["publisher'"] = Regexp.new(params[:publisher])
 			end
 			flts
 		end
