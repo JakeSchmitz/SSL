@@ -1,4 +1,9 @@
-<h3><% if doc['ssltitle'].nil? %><%= doc['title'].gsub('<b>', '').gsub('</b>', '') %><% else %><%= doc['ssltitle'] %><% end %></h3>
+<h3>
+<% if doc['ssltitle'].nil? %>
+	<%= doc['title'].gsub('<b>', '').gsub('</b>', '') %>
+<% else %>
+	<%= doc['ssltitle'] %>
+<% end %></h3>
 <div class="panel panel-info">
   <div class="panel-heading">
   <!-- <%= doc['title'].gsub('<b>', '').gsub('</b>', '') %> -->
@@ -30,7 +35,7 @@
 				<% if k[0] == 'u' then k = k[2..-2] end %>
 				<tr>
 					<td><%= k.gsub(/\u0080-\u00ff/,'') %></td> 
-					<td><%= v %></td> 
+					<td><%= v.to_s.lstrip %></td> 
 				</tr>
 			<% end %>
 		</table>

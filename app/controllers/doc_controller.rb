@@ -27,6 +27,14 @@ class DocController < ApplicationController
 		end
 	end
 
+	def create
+		if params[:new_doc_contents].nil?
+
+		else
+
+		end
+	end
+
 	private
 		def ssl
 			mongo_uri = ENV['SSL_MONGODB']
@@ -38,28 +46,29 @@ class DocController < ApplicationController
 
 		def filters
 			flts = {}
-			if params.has_key?(:title) and params[:title].match(/^[[:alnum:]]+$/)
-				flts["ssltitle"] = Regexp.new(params[:title])
+			if params.has_key?(:title) and params[:title].match(/^[[:alnum:]\ ]+$/)
+				title = Regexp.new(params[:title].split(' ').map{|word| '(?=.*' << word << ')'}.join(''), true)
+				flts["ssltitle"] = title
 			end
-			if params.has_key?(:author) and params[:author].match(/^[[:alnum:]]+$/)
-				flts["sslauthor"] = Regexp.new(params[:author])
+			if params.has_key?(:author) and params[:author].match(/^[[:alnum:]\ ]+$/)
+				flts["sslauthor"] = Regexp.union(params[:author].split(' ').map{|w| Regexp.new(w, true)})
 			end
-			if params.has_key?(:keywords) and params[:keywords].match(/^[[:alnum:]]+$/)
-				keywords = params[:keywords].split(' ').join('| ')
-				flts["subject_terms'"] = Regexp.new(keywords)
+			if params.has_key?(:keywords) and params[:keywords].match(/^[[:alnum:]\ ]+$/)
+				keywords = Regexp.union(params[:keywords].split(' ').map{|word| Regexp.new(word, true)})
+				flts["subject_terms"] = keywords
 			end
-			if params.has_key?(:disciplines) and params[:disciplines].match(/^[[:alnum:]]+$/)
-				flts["disciplines'"] = Regexp.new(params[:disciplines])
+			if params.has_key?(:disciplines) and params[:disciplines].match(/^[[:alnum:]\ ]+$/)
+				flts["disciplines"] = Regexp.union(params[:disciplines].split(' ').map{|word| Regexp.new(word, true)})
 			end
-			if params.has_key?(:publisher) and params[:publisher].match(/^[[:alnum:]]+$/)
-				flts["publisher'"] = Regexp.new(params[:publisher])
+			if params.has_key?(:publisher) and params[:publisher].match(/^[[:alnum:]\ ]+$/)
+				flts["publisher"] = Regexp.new(params[:publisher], true)
 			end
 			flts
 		end
 
 		def sorted_by
 			srt = {}
-			if params.has_key?(:sort_by) and params[:sort_by].match(/^[[:alnum:]]+$/)
+			if params.has_key?(:sort_by) and params[:sort_by].match(/^[[:alnum:]\ ]+$/)
 				srt[params[:sort_by]] = 1
 			else
 				srt[:ssltitle] = 1
