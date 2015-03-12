@@ -63,6 +63,9 @@ class DocController < ApplicationController
 			if params.has_key?(:publisher) and params[:publisher].match(/^[[:alnum:]\ ]+$/)
 				flts["publisher"] = Regexp.new(params[:publisher], true)
 			end
+			if params.has_key?(:isbn) and not params[:isbn].nil?
+				flts["isbn"] = Regexp.new(Regexp.escape(params[:isbn]), true)
+			end
 			flts
 		end
 
