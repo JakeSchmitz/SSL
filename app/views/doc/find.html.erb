@@ -1,28 +1,15 @@
 <% if not @result.nil? and not @result.empty? %> 
-    <p>Is this the article you wanted?</p>
-    <ul id="results">
-    <% @result.each do |r| %>
-        <li>
-        <table style="width:100%">
-        <tr>
-            <th>Attribute</th> 
-            <th>Value</th>
-        </tr>
-        <% r.each do |k, v| %>
-	    <% if k[0] == 'u' then k = k[2..-2] end %>
-	    <tr>
-		<td><%= k.gsub(/\u0080-\u00ff/,'') %></td> 
-		<td><%= v %></td> 
-	    </tr>
-        <% end %>
-        </table>
-        </li>
-    <% end %>
-
-    <div class="btn-group" role="group">
+    <h3 style="display: inline-block;">Is this the article you wanted?</h3>
+    <div class="btn-group" role="group" style="margin-bottom: 10px">
         <button type="button" class="btn btn-primary">Yes</button>
         <button type="button" class="btn" id="btn-no">No</button>
     </div>
+    <ul id="results">
+    <% @result.each do |r| %>
+        <li>
+            <%= render partial: '/doc/doc', locals: { doc: r } %>
+        </li>
+    <% end %>
 
     <script>
         var $listItems = $('#results > li');
