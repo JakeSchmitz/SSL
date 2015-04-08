@@ -1,8 +1,61 @@
 <% if not doc['title'].nil? %>
 	<h3><%= doc['title'].html_safe %></h3>
+        <h4>Author(s):  <% if not doc['authors'].nil?  
+				        then authors = eval(doc['authors'].to_s.gsub(':', '=>').gsub('u\'', '\'')).map{|x| x['fullname'] }.join('; ')
+				  	else authors = doc['authors'] end %>
+			<%= authors.html_safe %>
+        </h1>
+
+	<div class="panel panel-info">
+	    <div class="panel-heading">
+	        <div class="panel-title">About this Entry</div>
+	    </div>
+	    <div class="panel-body" style="overflow-x: scroll">
+	        <table class="table">
+                    <% if not doc['abstracts'].nil? %>
+                    <tr>
+                        <th>Abstract</th>
+                        <% abstracts = eval(doc['abstracts'].gsub(':', '=>').gsub('u\'', '\'').gsub('u"', '"')).each{|x| x.to_s } %>
+                        <td><%= abstracts[0]['abstract'] %></td>
+                    </tr>
+                    <% end %>
+                    <% if not doc['publication_title'].nil? %>
+                    <tr>
+                        <th>Publication Title</th>
+                        <td><%= doc['publication_title'] %></td>
+                    </tr>
+                    <% end %>
+                    <% if not doc['publisher'].nil? %>
+                    <tr>
+                        <th>Publisher</th>
+                        <td><%= doc['publisher'] %></td>
+                    </tr>
+                    <% end %>
+                    <% if not doc['publication_date'].nil? %>
+                    <tr>
+                        <th>Publication Date</th>
+                        <td><%= doc['publication_date'] %></td>
+                    </tr>
+                    <% end %>
+                    <% if not doc['uris'].nil? %>
+                    <tr>
+                        <th>URIs</th>
+                        <% uris = eval(doc['uris'].gsub('u\'', '\'').gsub('u"', '"')).each{|x| x.replace('<a href="' + x.to_s + '" target="_blank">' + x.to_s + '</a>') }.join('<br />') %>
+                        <td><%= uris.html_safe %></td>
+                    </tr>
+                    <% end %>
+                    <% if not doc['subject_terms'].nil? %>
+		    <tr>
+			<th>Keywords</th>
+                        <td><%= eval(doc['subject_terms'].to_s).sort.join('<br />').html_safe %></td>
+		    </tr>
+		    <% end %>
+                    
+                </table>
+            </div>
+        </div>
 	<div class="panel panel-info">
 	  <div class="panel-heading">
-	  <!-- <%= doc['title'].gsub('<b>', '').gsub('</b>', '') %> -->
 	    <div class="panel-title">Metadata</div>
 	  </div>
 	  <div class="panel-body" style="overflow-x: scroll">
@@ -19,7 +72,7 @@
 				  <tr>
 				  	<td>Authors</td>
 				  	<% if not doc['authors'].nil?  
-				  			then authors = eval(doc['authors'].to_s.gsub(':', '=>').gsub('u\'', '\'')).map{|x| x.values }.join(', ')
+				  			then authors = eval(doc['authors'].to_s.gsub(':', '=>').gsub('u\'', '\'')).map{|x| x['fullname'] }.join('; ')
 				  			else authors = doc['authors'] end %>
 				  	<td><%= authors.html_safe %></td>
 				  </tr>
