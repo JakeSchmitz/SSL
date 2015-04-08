@@ -23,15 +23,21 @@ class DocController < ApplicationController
 		if json_response.keys.include?("documents")
 			@result = response.content["documents"]
 		else
-			@result = nil
+			@result = ''
 		end
 	end
 
 	def create
+		puts params
 		if params[:new_doc_contents].nil?
-
+			puts 'Failed to find new_doc_contents'
+			redirect_to doc_find_path, notice: 'Could not find that doc'
 		else
-
+			new_doc = params[:new_doc_contents]
+			new_doc['_id'] = new_doc['isbn']
+			new_id = ssl.insert(new_doc)
+			puts new_doc.to_s
+			redirect_to doc_path(new_id), notice: 'Your document was successfully added to the SSL'
 		end
 	end
 
@@ -48,10 +54,10 @@ class DocController < ApplicationController
 			flts = {}
 			if params.has_key?(:title) and params[:title].match(/^[[:alnum:]\ ]+$/)
 				title = Regexp.new(params[:title].split(' ').map{|word| '(?=.*' << word << ')'}.join(''), true)
-				flts["ssltitle"] = title
+				flts["title"] = title
 			end
 			if params.has_key?(:author) and params[:author].match(/^[[:alnum:]\ ]+$/)
-				flts["sslauthor"] = Regexp.union(params[:author].split(' ').map{|w| Regexp.new(w, true)})
+				flts["author"] = Regexp.union(params[:author].split(' ').map{|w| Regexp.new(w, true)})
 			end
 			if params.has_key?(:keywords) and params[:keywords].match(/^[[:alnum:]\ ]+$/)
 				keywords = Regexp.union(params[:keywords].split(' ').map{|word| Regexp.new(word, true)})
@@ -74,7 +80,7 @@ class DocController < ApplicationController
 			if params.has_key?(:sort_by) and params[:sort_by].match(/^[[:alnum:]\ ]+$/)
 				srt[params[:sort_by]] = 1
 			else
-				srt[:ssltitle] = 1
+				srt[:title] = 1
 			end
 			srt
 		end

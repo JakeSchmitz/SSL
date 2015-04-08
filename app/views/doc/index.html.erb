@@ -20,15 +20,22 @@
   <div class="panel-body">
     <table class="table">
       <tr>
-        <th><a href=<%= docs_path({sort_by: :ssltitle}) %>>Title</a></th> 
-        <th><a href=<%= docs_path({sort_by: :sslauthor}) %>>Author(s)</a></th>
+        <th><a href=<%= docs_path({sort_by: :title}) %>>Title</a></th> 
+        <th><a href=<%= docs_path({sort_by: :author}) %>>Author(s)</a></th>
         <th><a href=<%= docs_path({sort_by: :isbn}) %>>ISBN</a></th>
       </tr>
       <% @docs.first(50).each do |d| %>
         <% doc = d %>
         <tr>
-          <td><a href=<%= doc_path(id: doc['id']) %>><%= doc['ssltitle'] %></a></td>
-          <td><% if doc['sslauthor'].length > 30 %><%= doc['sslauthor'][0..30].gsub(/\s\w+\s*$/, '...') %><% else %><%= doc['sslauthor'] %><% end %></td>
+          <td><a href=<%= doc_path(id: doc['id']) %>><%= if not doc['title'].nil? then doc['title'] else doc['title'].html_safe end %></a></td>
+          <% authors = eval(doc['authors'].gsub('u\'', '\'').gsub(':', '=>')) %>
+          <td>
+            <% if not authors.nil? and not authors[0].nil? and not authors[0]['fullname'].nil?%>
+              <%= authors[0]['fullname'] %>
+            <% elsif not authors[0].nil? %>
+              <%= authors[0]['fullname'] %>
+            <% end %>
+          </td>
           <td><%= doc['isbn'] %></td>
         </tr>
       <% end %>

@@ -1,43 +1,47 @@
-<h3>
-<% if doc['ssltitle'].nil? %>
-	<%= doc['title'].gsub('<b>', '').gsub('</b>', '') %>
-<% else %>
-	<%= doc['ssltitle'] %>
-<% end %></h3>
-<div class="panel panel-info">
-  <div class="panel-heading">
-  <!-- <%= doc['title'].gsub('<b>', '').gsub('</b>', '') %> -->
-    <div class="panel-title">Metadata</div>
-  </div>
-  <div class="panel-body" style="overflow-x: scroll">
-		<table class="table">
-		  <tr>
-		  	<th>Key</th> 
-		    <th>Value</th>
-		  </tr>
-		  <tr>
-		  	<td>Title</td>
-		  	<td><%= doc['title'].gsub('<b>', '').gsub('</b>', '') %></td>
-		  </tr>
-		  <% if not doc['authors'].nil? %>
+<% if not doc['title'].nil? %>
+	<h3><%= doc['title'].html_safe %></h3>
+	<div class="panel panel-info">
+	  <div class="panel-heading">
+	  <!-- <%= doc['title'].gsub('<b>', '').gsub('</b>', '') %> -->
+	    <div class="panel-title">Metadata</div>
+	  </div>
+	  <div class="panel-body" style="overflow-x: scroll">
+			<table class="table">
 			  <tr>
-			  	<td>Authors</td>
-			  	<td><%= doc['authors'] %></td>
+			  	<th>Key</th> 
+			    <th>Value</th>
 			  </tr>
-		  <% end %>
-		  <% if not doc['subject_terms'].nil? %>
 			  <tr>
-			  	<td>Keywords</td>
-			  	<td><%= doc['subject_terms'] %></td>
+			  	<td>Title</td>
+			  	<td><%= doc['title'].to_s.gsub('<b>', '').gsub('</b>', '').html_safe %></td>
 			  </tr>
-		  <% end %>
-			<% doc.each do |k, v| %>
-				<% if k[0] == 'u' then k = k[2..-2] end %>
-				<tr>
-					<td><%= k.gsub(/\u0080-\u00ff/,'') %></td> 
-					<td><%= v.to_s.lstrip %></td> 
-				</tr>
-			<% end %>
-		</table>
+			  <% if not doc['authors'].nil? %>
+				  <tr>
+				  	<td>Authors</td>
+				  	<% if not doc['authors'].nil?  
+				  			then authors = eval(doc['authors'].to_s.gsub(':', '=>').gsub('u\'', '\'')).map{|x| x.values }.join(', ')
+				  			else authors = doc['authors'] end %>
+				  	<td><%= authors.html_safe %></td>
+				  </tr>
+			  <% end %>
+			  <% if not doc['subject_terms'].nil? %>
+				  <tr>
+				  	<td>Keywords</td>
+				  	<td><%= eval(doc['subject_terms'].to_s).join(', ').html_safe %></td>
+				  </tr>
+			  <% end %>
+				<% doc.each do |k, v| %>
+					<% if k[0] == 'u' then k = k[2..-2] end %>
+					<% if v.class == String and v[0] == '['
+								then v = eval(v.gsub(':', '=>').gsub('u\'', '\'').gsub('u"','"')).each{|x| x.to_s }.join(', ') end %>
+					<tr>
+						<td><%= k.to_s.gsub(/\u0080-\u00ff/,'') %></td> 
+						<td><%= v.to_s.lstrip.html_safe %></td> 
+					</tr>
+				<% end %>
+			</table>
+		</div>
 	</div>
-</div>
+<% else %>
+	<p>Unable to find results for <%= doc.to_s %></p>
+<% end %>
