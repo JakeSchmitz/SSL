@@ -1,7 +1,9 @@
 Gdae::Application.routes.draw do
+  devise_for :users
   get "ssl/index"
   get "ssl/about"
   get "ssl/admin"
+  get "ssl/search"
   root "ssl#index"
 
   get '/find', to: 'doc#find', as: 'result'
