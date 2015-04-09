@@ -10,6 +10,9 @@ class DocController < ApplicationController
 
 	def show
 		@doc = ssl.find({id: params[:id]}).to_a.first
+		if @doc.nil?
+			redirect_to doc_index_path, notice: 'No record of doc with id: ' + params[:id].to_s  
+		end
 	end
 
 	def find

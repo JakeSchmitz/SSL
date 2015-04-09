@@ -1,25 +1,16 @@
-<h1>Social Science Library</h1>
-<h3>Produced by the Global Development and Environment Institute at Tufts University</h3>
-<%= form_tag("/doc", method: "get") do %>
-	<h5>Search By:</h5>
-  <%= label_tag(:title, "Title:") %>
-  <%= text_field_tag(:title, params[:title])%>
-  </br>
-  <%= label_tag(:author, "Author(s):") %>
-  <%= text_field_tag(:author, params[:author]) %>
-  </br>
-  <%= label_tag(:isbn, "ISBN:") %>
-  <%= text_field_tag(:isbn, params[:isbn]) %>
-  </br>
-  <%= label_tag(:disciplines, "Discipline(s):") %>
-  <%= text_field_tag(:disciplines, params[:disciplines]) %>
-  </br>
-  <%= label_tag(:keywords, "Keyword(s):") %>
-  <%= text_field_tag(:keywords, params[:keywords]) %>
-  </br>
-  <%= label_tag(:publisher, "Publisher:") %>
-  <%= text_field_tag(:publisher, params[:publisher]) %>
-  </br>
-  <%= submit_tag("Search", class: 'btn btn-primary') %>
-  <%= link_to 'Clear', docs_path %>
-<% end %>
+<div class="home-center">
+  <h2>Welcome to the Social Science Library:</h2>
+  <h3>Frontier Thinking in Sustainable Development and Human Well-Being</h3>
+
+  <h4 style="font-style: italic">A project of</h4>
+
+  <p><a href="https://ase.tufts.edu/gdae/">The Global Development And Environment Institute (GDAE)</a></p>
+  <p>at Tufts University in conjunction with</p>
+  <p>the UN Decade for Education for Sustainable Development.</p>
+</div>
+<br>
+<div class="home-text">
+  <p>The Social Science Library (SSL) contains complete bibliographic references for over 9,300 journal articles, book chapters, and working papers covering Anthropology, Economics, History, Political Science, Social Psychology, Sociology, and Philosophy. The complete text of about 3,200 of these documents are included in the SSL.</p>
+  <%= render partial: '/ssl/ssl_search' %><br><br>
+  <p>Copyright Notification: The Social Science Library (SSL) is for distribution in a defined set of countries. The complete list may be found here. Free distribution within these countries is encouraged, but copyright law forbids distribution outside of these countries. </p><br>
+</div>

@@ -7,4 +7,7 @@ class SslController < ApplicationController
 
   def admin
   end
+
+  def search
+  end
 end

@@ -30,6 +30,7 @@ gem 'bootstrap-sass'
 gem 'awesome_print'
 gem 'httpclient'
 gem 'thin'
+gem 'devise'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
