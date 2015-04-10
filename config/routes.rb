@@ -4,8 +4,10 @@ Gdae::Application.routes.draw do
   get "ssl/about"
   get "ssl/admin"
   get "ssl/search"
+  get "ssl/users"
   root "ssl#index"
 
+  get '/ssl/promote_user/:promote_id', to: 'ssl#promote_user', as: 'promote'
   get '/find', to: 'doc#find', as: 'result'
   get '/doc/:id', to: 'doc#show', as: 'doc'
   get '/doc', to: 'doc#index', as: 'docs'
