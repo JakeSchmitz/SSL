@@ -12,12 +12,12 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
+        <li><%= link_to("About", ssl_about_path) %></li>
         <li><%= link_to("Search", ssl_search_path) %></li>
         <li><%= link_to("Full Listing", docs_path) %></li>
-        <li><a href="https://ase.tufts.edu/gdae/">GDAE Home</a></li>
         <% if current_user.try(:admin?) %>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administration <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href=<%= ssl_admin_path %>>Add Document</a></li>
               <li class="divider"></li>
