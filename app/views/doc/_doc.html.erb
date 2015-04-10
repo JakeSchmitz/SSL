@@ -19,7 +19,11 @@
                                     then abstracts = eval(doc['abstracts'].gsub(':', '=>').gsub('u\'', '\'').gsub('u"', '"')).each{|x| x.to_s }
                                     else abstracts = doc['abstracts'] end %>
                         <td><% if not abstracts[0].nil? %>
-                                <%= abstracts[0]['abstract'] %>
+                                <% s = abstracts[0]['abstract'] %>
+                                <% if ! s.valid_encoding?
+  s = s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+end %>
+                                <%= s.to_s %>
                             <% end %>
                         </td>
                     </tr>
