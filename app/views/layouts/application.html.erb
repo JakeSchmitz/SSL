@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Gdae</title>
-  <%= render partial: '/layouts/google_analytics_snippet' %>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -18,5 +17,6 @@
 		<% end %>
 		<%= yield %>
 	</div>
+	<%= render partial: '/layouts/google_analytics_snippet' %>
 </body>
 </html>
