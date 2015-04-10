@@ -1,13 +1,15 @@
-<%= form_tag("/doc", method: "get") do %>
-  <%= label_tag(:title, "Search for title:") %>
-  <%= text_field_tag(:title, params[:title])%>
-  <%= label_tag(:author, "Author(s):") %>
-  <%= text_field_tag(:author, params[:author]) %>
-  <%= label_tag(:keywords, "Keywords:") %>
-  <%= text_field_tag(:keywords, params[:keywords]) %>
-  <%= submit_tag("Search", class: 'btn btn-primary') %>
-  <%= link_to 'Clear', docs_path %>
-<% end %>
+<div class="ssl-table-search">
+  <%= form_tag("/doc", method: "get") do %>
+    <%= label_tag(:title, "Search for title:") %>
+    <%= text_field_tag(:title, params[:title])%>
+    <%= label_tag(:author, "Author(s):") %>
+    <%= text_field_tag(:author, params[:author]) %>
+    <%= label_tag(:keywords, "Keywords:") %>
+    <%= text_field_tag(:keywords, params[:keywords]) %>
+    <%= submit_tag("Search", class: 'btn btn-primary') %>
+    <%= link_to 'Clear', docs_path %>
+  <% end %>
+</div>
 <div class="panel panel-info ssl-table">
   <div class="panel-heading">
     <div class="panel-title">

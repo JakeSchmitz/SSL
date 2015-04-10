@@ -12,15 +12,22 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li><%= link_to("About", ssl_about_path) %></li>
         <li><%= link_to("Search", ssl_search_path) %></li>
         <li><%= link_to("Full Listing", docs_path) %></li>
         <li><a href="https://ase.tufts.edu/gdae/">GDAE Home</a></li>
-        <% if current_user.try(:admin?) %><li><%= link_to("Admin", ssl_admin_path) %></li><% end %>
+        <% if current_user.try(:admin?) %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Administration <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href=<%= ssl_admin_path %>>Add Document</a></li>
+              <li class="divider"></li>
+              <li><a href=<%= ssl_users_path %>>View Users</a></li>
+            </ul>
+          </li>
+        <% end %>
       </ul>
       <p class="navbar-text pull-right">
       <% if user_signed_in? %>
-        Logged in as <strong><%= current_user.email %></strong>.
         <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
       <% else %>
         <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |

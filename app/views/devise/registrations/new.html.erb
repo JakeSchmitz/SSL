@@ -12,7 +12,7 @@
   <div><%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
 
-  <div><%= f.submit "Sign up", class: "btn" %></div>
+  <div><%= f.submit "Sign up", class: "btn btn-primary", style: 'margin-top: 10px' %></div>
 <% end %>
 
 <%= render "devise/shared/links" %>

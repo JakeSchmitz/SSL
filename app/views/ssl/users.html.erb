@@ -27,7 +27,7 @@
 	      							method: :delete, class: 'btn btn-danger' %>
 	      					<% if not user.admin? %>
 	      						<%= link_to "Make Admin", 
-	      								ssl_promote_user_path(user.id), 
+	      								promote_path(user.id), 
 	      								class: 'btn btn-primary' %>
 	      					<% end %>
 	      				</td>
