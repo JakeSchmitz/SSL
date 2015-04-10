@@ -1,0 +1,45 @@
+<% if user_signed_in? %>
+	<div class="users">
+		<div class="panel panel-info user-table">
+	  	<div class="panel-heading">
+	    	<div class="panel-title">
+	    		Users
+	    	</div>
+	    </div>
+	    <div class="panel-body">
+	    	<table class="table">
+	      	<tr>
+	      		<th>Email Address</th>
+	      		<th>Admin?</th>
+	      		<th>Last Sign In</th>
+	      		<% if current_user.try(:admin?) %><th>Actions</th><% end %>
+	      	</tr>
+	      	<% @users.each do |user| %>
+	      		<tr class="user-row">
+	      			<td><a href=<%= "mailto:" + user.email %>><%= user.email %></a></td>
+	      			<td><%= user.admin ? "Yes" : "No" %></td>
+	      			<td><%= user.last_sign_in_at %></td>
+	      			<% if current_user.try(:admin?) %>
+	      				<td>
+	      					<%= link_to "Delete", 
+	      							registration_path(user), 
+	      							data: { confirm: "Are you sure?" }, 
+	      							method: :delete, class: 'btn btn-danger' %>
+	      					<% if not user.admin? %>
+	      						<%= link_to "Make Admin", 
+	      								ssl_promote_user_path(user.id), 
+	      								class: 'btn btn-primary' %>
+	      					<% end %>
+	      				</td>
+	      			<% end %>
+	      		</tr>
+	      	<% end %>
+	      </table>
+	    </div>
+	  </div>
+	</div>
+<% else %>
+	<h2>You must sign in to see other users of the SSL</h2>
+	<%= link_to "Sign up", new_user_registration_path, :class => 'btn btn-primary'  %>
+  <%= link_to "Login", new_user_session_path, :class => 'btn btn-primary'  %>
+<% end %>
