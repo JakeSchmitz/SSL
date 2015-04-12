@@ -15,6 +15,15 @@ class DocController < ApplicationController
 		end
 	end
 
+        def raw
+		@raw = ssl.find({id: params[:id]}).to_a.first
+		if @raw.nil?
+			redirect_to doc_index_path, notice: 'No record of doc with id: ' + params[:id].to_s  
+                else
+                        render json: @raw 
+		end
+        end
+
 	def find
 		clnt = JSONClient.new
 		header = {'Cookie' => 'Summon-Two=true'}

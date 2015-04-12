@@ -66,6 +66,7 @@ end %>
                 </table>
             </div>
         </div>
+        <a class="btn btn-primary" href=<%= raw_path(id: doc['id']) %>>View Raw JSON</a>
 <% else %>
 	<p>Unable to find results for <%= doc.to_s %></p>
 <% end %>

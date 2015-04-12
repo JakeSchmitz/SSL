@@ -10,6 +10,7 @@ Gdae::Application.routes.draw do
   get '/ssl/promote_user/:promote_id', to: 'ssl#promote_user', as: 'promote'
   get '/find', to: 'doc#find', as: 'result'
   get '/doc/:id', to: 'doc#show', as: 'doc'
+  get '/raw/:id', to: 'doc#raw', as: 'raw'
   get '/doc', to: 'doc#index', as: 'docs'
   post '/doc/create', to: 'doc#create'
 
