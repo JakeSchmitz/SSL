@@ -30,7 +30,9 @@
         <% doc = d %>
         <tr>
           <td><a href=<%= doc_path(id: doc['id']) %>><%= if not doc['title'].nil? then doc['title'] else doc['title'].html_safe end %></a></td>
-          <% authors = eval(doc['authors'].gsub('u\'', '\'').gsub(':', '=>')) %>
+              <% if doc['authors'].class == String
+                     then authors = eval(doc['authors'].gsub('u\'', '\'').gsub(':', '=>')) 
+              else authors = doc['authors'] end %>
           <td>
             <% if not authors.nil? and not authors[0].nil? and not authors[0]['fullname'].nil?%>
               <%= authors[0]['fullname'] %>

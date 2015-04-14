@@ -53,6 +53,17 @@ class DocController < ApplicationController
 		end
 	end
 
+        def delete
+                puts params
+                if params[:id].nil?
+                        puts 'Failed to find id'
+			redirect_to doc_index_path, notice: 'Could not delete that doc'
+                else
+                        ssl.remove({'id': params[:id]})
+                        redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
+                end
+        end
+
 	private
 		def ssl
 			mongo_uri = ENV['SSL_MONGODB']

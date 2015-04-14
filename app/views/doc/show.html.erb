@@ -1,1 +1,6 @@
 <%= render partial: '/doc/doc', locals: { doc: @doc } %>
+
+<a class="btn btn-primary" href=<%= raw_path(id: @doc['id']) %>>View Raw JSON</a>
+<% if current_user.try(:admin?) %>
+    <a class="btn btn-primary" href=<%= delete_path(id: @doc['id']) %>>Delete</a>
+<% end %>

@@ -11,6 +11,7 @@ Gdae::Application.routes.draw do
   get '/find', to: 'doc#find', as: 'result'
   get '/doc/:id', to: 'doc#show', as: 'doc'
   get '/raw/:id', to: 'doc#raw', as: 'raw'
+  get '/delete/:id', to: 'doc#delete', as: 'delete'
   get '/doc', to: 'doc#index', as: 'docs'
   post '/doc/create', to: 'doc#create'
 
