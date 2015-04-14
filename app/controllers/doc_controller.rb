@@ -54,13 +54,17 @@ class DocController < ApplicationController
 	end
 
         def delete
-                puts params
-                if params[:id].nil?
-                        puts 'Failed to find id'
-			redirect_to doc_index_path, notice: 'Could not delete that doc'
+                if current_user.try(:admin?)
+                    puts params
+                    if params[:id].nil?
+                            puts 'Failed to find id'
+                            redirect_to doc_index_path, notice: 'Could not delete that doc'
+                    else
+                            ssl.remove({'id': params[:id]})
+                            redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
+                    end
                 else
-                        ssl.remove({'id': params[:id]})
-                        redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
+                    redirect_to root_path, alert: 'You do not have permission to delete entries from the SSL'
                 end
         end
 
