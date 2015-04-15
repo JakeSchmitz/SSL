@@ -12,8 +12,10 @@ Gdae::Application.routes.draw do
   get '/doc/:id', to: 'doc#show', as: 'doc'
   get '/raw/:id', to: 'doc#raw', as: 'raw'
   get '/delete/:id', to: 'doc#delete', as: 'delete'
+  get '/edit/:id', to: 'doc#edit', as: 'edit'
   get '/doc', to: 'doc#index', as: 'docs'
   post '/doc/create', to: 'doc#create'
+  post '/doc/update', to: 'doc#update'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

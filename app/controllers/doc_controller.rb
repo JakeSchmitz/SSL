@@ -28,9 +28,7 @@ class DocController < ApplicationController
 		clnt = JSONClient.new
 		header = {'Cookie' => 'Summon-Two=true'}
 		uri = URI.parse(URI.encode("http://tufts.summon.serialssolutions.com/api/search?pn=1&ho=t&q=" + params[:title]))
-		response = clnt.get(uri,
-												nil,
-												header)
+		response = clnt.get(uri, nil, header)
 		json_response = response.content
 		if json_response.keys.include?("documents")
 			@result = response.content["documents"]
@@ -43,7 +41,7 @@ class DocController < ApplicationController
 		puts params
 		if params[:new_doc_contents].nil?
 			puts 'Failed to find new_doc_contents'
-			redirect_to doc_find_path, notice: 'Could not find that doc'
+			redirect_to doc_find_path, alert: 'Could not find that doc'
 		else
 			new_doc = params[:new_doc_contents]
 			new_doc['_id'] = new_doc['isbn']
@@ -53,18 +51,50 @@ class DocController < ApplicationController
 		end
 	end
 
-        def delete
+        def edit
                 if current_user.try(:admin?)
-                    puts params
-                    if params[:id].nil?
-                            puts 'Failed to find id'
-                            redirect_to doc_index_path, notice: 'Could not delete that doc'
-                    else
-                            ssl.remove({'id': params[:id]})
-                            redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
+                        @edit = ssl.find({id: params[:id]}).to_a.first
+                        if @edit.nil?
+                                redirect_to doc_index_path, alert: 'No record of doc with id: ' + params[:id].to_s  
+                        end
+                else
+                        redirect_to root_path, alert: 'You do not have permission to edit SSL entries'
+                end
+        end
+
+        def update
+                if current_user.try(:admin?)
+                        puts params
+                        if params[:id].nil?
+                                puts 'Failed to find id'
+                                redirect_to docs_path, alert: 'Could not edit that doc'
+                        else
+                                params.delete("utf8")
+                                params.delete("authenticity_token")
+                                params.delete("commit")
+                                params.delete("controller")
+                                params.delete("action")
+                                puts params
+                                # ssl.update({'id': params[:id]}, params[:modified_contents])
+                                redirect_to doc_path(params[:id]), notice: 'Your document was successfully edited'
                     end
                 else
-                    redirect_to root_path, alert: 'You do not have permission to delete entries from the SSL'
+                        redirect_to root_path, alert: 'You do not have permission to edit SSL entries'
+                end
+        end
+
+        def delete
+                if current_user.try(:admin?)
+                        puts params
+                        if params[:id].nil?
+                                puts 'Failed to find id'
+                                redirect_to doc_index_path, notice: 'Could not delete that doc'
+                        else
+                                ssl.remove({'id': params[:id]})
+                                redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
+                        end
+                else
+                        redirect_to root_path, alert: 'You do not have permission to delete entries from the SSL'
                 end
         end
 

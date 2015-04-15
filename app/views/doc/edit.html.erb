@@ -1,0 +1,26 @@
+<% if not @edit['title'].nil? %>
+    <h3><%= @edit['title'].html_safe %></h3>
+    <h4>Author(s):  <% if not @edit['authors'].nil?  
+			    then authors = eval(@edit['authors'].to_s.gsub(':', '=>').gsub('u\'', '\'')).map{|x| x['fullname'] }.join('; ')
+			    else authors = @edit['authors'] end %>
+	<%= authors.html_safe %></h4>
+<% end %>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="panel-title">Modify this Entry</div>
+    </div>
+</div>
+<div class="panel-body" style="overflow-x: scroll">
+    <%= form_tag(doc_update_path(:modified_contents: f) do |f| %>
+        <table class="table">
+            <% @edit.each do |k, v| %>
+                <tr>
+                    <td><%= label_tag(k, k) %></td>
+                    <td><%= text_field_tag(k, v, size: "100%") %></td>
+                </tr>
+            <% end %>
+        </table>
+        <%= submit_tag("Submit Changes", class: 'btn btn-primary') %>
+    <% end %>
+</div>
