@@ -64,19 +64,34 @@ class DocController < ApplicationController
 
         def update
                 if current_user.try(:admin?)
-                        puts params
-                        if params[:id].nil?
+                        old_entry = ssl.find({id: params[:id]}).to_a.first
+                        mongo_id = params["_id"]
+                        if mongo_id.nil?
                                 puts 'Failed to find id'
                                 redirect_to docs_path, alert: 'Could not edit that doc'
                         else
-                                params.delete("utf8")
-                                params.delete("authenticity_token")
-                                params.delete("commit")
-                                params.delete("controller")
-                                params.delete("action")
-                                puts params
-                                # ssl.update({'id': params[:id]}, params[:modified_contents])
-                                redirect_to doc_path(params[:id]), notice: 'Your document was successfully edited'
+                                begin
+                                        params.to_json
+                                rescue JSON::JsonError
+                                        puts 'JSON Error'
+                                        redirect_to doc_path(params[:id]), alert: 'Your edits were not successful. Please try again.'
+                                end
+                                updated_keys = Hash.new
+                                params.each do |key, value|
+                                        if key != "_id" and old_entry.include?(key) and value != old_entry[key]
+                                                # don't want to try to update fields with the same value--mongo doesn't seem to like that
+                                                updated_keys[key] = value.to_json
+                                        end
+                                end
+                                # ssl.update never succeeds and I have no clue why
+                                status = ssl.update({"_id" => params["_id"]}, {"$set" => updated_keys}, {"$upsert" => true})
+                                if not status[:ok] or not status[:nModified]
+                                        puts updated_keys
+                                        puts 'Status error: ' + status.to_s
+                                        redirect_to doc_path(params[:id]), alert: 'Your edits were not successful. Please try again.'
+                                else
+                                        redirect_to doc_path(params[:id]), notice: 'Your document was successfully edited'
+                                end
                     end
                 else
                         redirect_to root_path, alert: 'You do not have permission to edit SSL entries'

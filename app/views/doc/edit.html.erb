@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="panel-body" style="overflow-x: scroll">
-    <%= form_tag(doc_update_path(:modified_contents: f) do |f| %>
+    <%= form_tag(doc_update_path) do |f| %>
         <table class="table">
             <% @edit.each do |k, v| %>
                 <tr>
