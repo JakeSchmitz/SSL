@@ -15,14 +15,14 @@ class DocController < ApplicationController
 		end
 	end
 
-        def raw
+	def raw
 		@raw = ssl.find({id: params[:id]}).to_a.first
 		if @raw.nil?
 			redirect_to doc_index_path, notice: 'No record of doc with id: ' + params[:id].to_s  
-                else
-                        render json: @raw 
+    else
+    	render json: @raw 
 		end
-        end
+  end
 
 	def find
 		clnt = JSONClient.new
@@ -51,67 +51,68 @@ class DocController < ApplicationController
 		end
 	end
 
-        def edit
-                if current_user.try(:admin?)
-                        @edit = ssl.find({id: params[:id]}).to_a.first
-                        if @edit.nil?
-                                redirect_to doc_index_path, alert: 'No record of doc with id: ' + params[:id].to_s  
-                        end
-                else
-                        redirect_to root_path, alert: 'You do not have permission to edit SSL entries'
-                end
-        end
+  def edit
+    if current_user.try(:admin?)
+      @edit = ssl.find({id: params[:id]}).to_a.first
+      if @edit.nil?
+        redirect_to doc_index_path, alert: 'No record of doc with id: ' + params[:id].to_s  
+      end
+    else
+    	redirect_to root_path, alert: 'You do not have permission to edit SSL entries'
+  	end
+  end
 
-        def update
-                if current_user.try(:admin?)
-                        old_entry = ssl.find({id: params[:id]}).to_a.first
-                        mongo_id = params["_id"]
-                        if mongo_id.nil?
-                                puts 'Failed to find id'
-                                redirect_to docs_path, alert: 'Could not edit that doc'
-                        else
-                                begin
-                                        params.to_json
-                                rescue JSON::JsonError
-                                        puts 'JSON Error'
-                                        redirect_to doc_path(params[:id]), alert: 'Your edits were not successful. Please try again.'
-                                end
-                                updated_keys = Hash.new
-                                params.each do |key, value|
-                                        if key != "_id" and old_entry.include?(key) and value != old_entry[key]
-                                                # don't want to try to update fields with the same value--mongo doesn't seem to like that
-                                                updated_keys[key] = value.to_json
-                                        end
-                                end
-                                # ssl.update never succeeds and I have no clue why
-                                status = ssl.update({"_id" => params["_id"]}, {"$set" => updated_keys}, {"$upsert" => true})
-                                if not status[:ok] or not status[:nModified]
-                                        puts updated_keys
-                                        puts 'Status error: ' + status.to_s
-                                        redirect_to doc_path(params[:id]), alert: 'Your edits were not successful. Please try again.'
-                                else
-                                        redirect_to doc_path(params[:id]), notice: 'Your document was successfully edited'
-                                end
-                    end
-                else
-                        redirect_to root_path, alert: 'You do not have permission to edit SSL entries'
-                end
+  def update
+    if current_user.try(:admin?)
+      old_entry = ssl.find({id: params[:id]}).to_a.first
+      mongo_id = params["_id"]
+      update_mongo_id = old_entry["_id"]
+      if mongo_id.nil?
+        puts 'Failed to find id'
+        redirect_to docs_path, alert: 'Could not edit that doc'
+      else
+        begin
+          params.to_json
+        rescue JSON::JsonError
+          puts 'JSON Error'
+          redirect_to doc_path(params[:id]), alert: 'Your edits were not successful. Please try again.'
         end
+        updated_keys = {}
+        params.each do |key, value|
+          if key != "_id" and old_entry.include?(key) and value != old_entry[key]
+            # don't want to try to update fields with the same value--mongo doesn't seem to like that
+            updated_keys[key] = value
+          end
+        end
+        # ssl.update never succeeds and I have no clue why
+        status = ssl.update({"_id" => update_mongo_id}, {"$set" => updated_keys}, {"$upsert" => true})
+        if status[:ok] == 0 or status[:nModified] == 0
+          puts updated_keys
+          puts 'Status error: ' + status.to_s
+          redirect_to doc_path(params[:id]), alert: 'Your edits were not successful. Please try again.'
+        else
+          redirect_to doc_path(params[:id]), notice: 'Your document was successfully edited'
+        end
+      end	
+    else
+      redirect_to root_path, alert: 'You do not have permission to edit SSL entries'
+    end
+  end
 
-        def delete
-                if current_user.try(:admin?)
-                        puts params
-                        if params[:id].nil?
-                                puts 'Failed to find id'
-                                redirect_to doc_index_path, notice: 'Could not delete that doc'
-                        else
-                                ssl.remove({'id': params[:id]})
-                                redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
-                        end
-                else
-                        redirect_to root_path, alert: 'You do not have permission to delete entries from the SSL'
-                end
-        end
+  def delete
+	  if current_user.try(:admin?)
+      puts params
+      if params[:id].nil?
+        puts 'Failed to find id'
+        redirect_to doc_index_path, notice: 'Could not delete that doc'
+      else
+        ssl.remove({id: params[:id]})
+        redirect_to docs_path, notice: 'Your document was successfully deleted from the SSL'
+      end
+	  else
+      redirect_to root_path, alert: 'You do not have permission to delete entries from the SSL'
+	  end
+  end
 
 	private
 		def ssl
