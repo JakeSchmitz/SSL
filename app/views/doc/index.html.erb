@@ -29,7 +29,7 @@
       <% @docs.first(50).each do |d| %>
         <% doc = d %>
         <tr>
-          <td><a href=<%= doc_path(id: doc['id']) %>><%= if not doc['title'].nil? then doc['title'] else doc['title'].html_safe end %></a></td>
+          <td><a href=<%= doc_path(id: doc['id']) %>><%= if not doc['full_title'].nil? then doc['full_title'].html_safe else doc['title'].html_safe end %></a></td>
               <% if doc['authors'].class == String
                      then authors = eval(doc['authors'].gsub('u\'', '\'').gsub(':', '=>')) 
               else authors = doc['authors'] end %>
