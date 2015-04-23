@@ -5,13 +5,19 @@ require 'uri'
 
 class DocController < ApplicationController
 	def index
-		@docs = ssl.find(filters).sort(sorted_by)
+		@cursor = ssl.find(filters).sort(sorted_by)
+		@docs = []
+		start = params[:page].to_i * 20 
+		@cursor.skip(start).first(21).each do |d|
+			@docs << d
+		end
+		@dpag = Kaminari.paginate_array(@docs).page(1).per(20)
 	end
 
 	def show
 		@doc = ssl.find({id: params[:id]}).to_a.first
 		if @doc.nil?
-			redirect_to doc_index_path, notice: 'No record of doc with id: ' + params[:id].to_s  
+			redirect_to docs_path, notice: 'No record of doc with id: ' + params[:id].to_s  
 		end
 	end
 
@@ -38,16 +44,32 @@ class DocController < ApplicationController
 	end
 
 	def create
-		puts params
 		if params[:new_doc_contents].nil?
 			puts 'Failed to find new_doc_contents'
 			redirect_to doc_find_path, alert: 'Could not find that doc'
 		else
 			new_doc = params[:new_doc_contents]
-			new_doc['_id'] = new_doc['isbn']
-			new_id = ssl.insert(new_doc)
-			puts new_doc.to_s
-			redirect_to doc_path(new_id), notice: 'Your document was successfully added to the SSL'
+			new_doc['title'] = new_doc['title'].gsub('<b>', '').gsub('</b>', '').titleize
+			if new_doc['isbn'].nil?
+				if new_doc['eissns'].nil?
+					if not new_doc['issns'].nil? and not new_doc['issns'].split('"')[1].nil?
+						new_doc['id'] = new_doc['issns'].split('"')[1]
+					end
+				else
+					if not new_doc['eissns'].nil? and not new_doc['eissns'].split('"')[1].nil?
+						new_doc['id'] = new_doc['eissns']
+					end
+				end
+			else
+				new_doc['id'] = new_doc['isbn']
+			end
+			begin
+			 	new_id = ssl.insert(new_doc)
+			 	new_doc_id = new_doc['id']
+				redirect_to doc_path(new_doc_id), notice: 'Your document was successfully added to the SSL'
+			rescue Mongo::OperationFailure => e
+				redirect_to ssl_admin_path, alert: 'Error inserting document: ' + e.message
+			end
 		end
 	end
 

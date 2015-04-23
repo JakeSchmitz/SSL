@@ -31,6 +31,7 @@ gem 'awesome_print'
 gem 'httpclient'
 gem 'thin'
 gem 'devise'
+gem 'kaminari'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

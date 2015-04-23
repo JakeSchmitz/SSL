@@ -5,12 +5,13 @@
     </div>
     <ul id="results">
     <% @result.each do |r| %>
+        <% r["id"] =  if r["isbn"].nil? then r["id"] else r["isbn"] end %>
         <li style="list-style-type: none">
-            <%= puts r = r.each{|_,str| if str.nil? then '' else str.to_s end } %>
             <%= form_tag(doc_create_path(new_doc_contents: r)) do %>
                 <%= submit_tag("Correct", class: 'btn btn-primary') %>
             <% end %>
             <%= render partial: '/doc/doc', locals: { doc: r } %>
+            <a class="btn btn-primary" href=<%= raw_path(id: r["id"]) %>>View Raw JSON</a>
         </li>
     <% end %>
 
@@ -32,8 +33,6 @@
                     $('button').remove();
                 }
         });
-
-
     </script>
 <% else %>
     <p>No results found.</p>
