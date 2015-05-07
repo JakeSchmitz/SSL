@@ -1,4 +1,5 @@
-== README
+README
+=======
 
 This is the web application for GDAE's Social Science Library at Tufts University.
 
