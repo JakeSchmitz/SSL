@@ -1,28 +1,36 @@
-== README
+README
+======
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the web application for GDAE's Social Science Library at Tufts University.
 
-Things you may want to cover:
+Configuration details
+--------
 
-* Ruby version
+* Ruby version: 2.2
 
-* System dependencies
+* Gem versions: see Gemfile
 
-* Configuration
+* Databases: PostgreSQL (managed by the Rails application) and MongoDB (not managed by the Rails application)
 
-* Database creation
+Getting started
+-------
 
-* Database initialization
+* Clone this repository
 
-* How to run the test suite
+* Move into the root of the repository (e.g. `SSL/`)
 
-* Services (job queues, cache servers, search engines, etc.)
+* Ensure you have Ruby 2.2 and the bundler gem installed. [The instructions here](http://cbednarski.com/articles/installing-ruby/)
+  were very helpful, but there are multiple ways to do this.
 
-* Deployment instructions
+* Run `bundle install`
 
-* ...
+* Run `bin/rails server` to run the application locally
 
+* If you're new to Rails, [this getting started guide](http://guides.rubyonrails.org/getting_started.html) may be useful.
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Deployment
+------
+
+* We have had success deploying the app to Heroku.
+
+* The deployment instructions for a Windows Server 2008 R2 architecture are in-progress.
